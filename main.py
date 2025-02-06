@@ -11,14 +11,33 @@ from modelling.model_pipeline import run_model_pipeline
 
 
 
-df = load_sql_file_to_dataframe(os.path.join("data","tickets.db"))
+DATA_PATH = os.path.join("data", "tickets.db")
 
-consistency_report = save_log_to_md(df)
+def main():
+    """Main script to run the ski ticket sales forecasting pipeline."""
+    
+    # Load data from SQLite database
+    df = load_sql_file_to_dataframe(DATA_PATH)
+    print("✅ Data successfully loaded!")
 
-df = prepare_data(df)
+    # Generate data consistency report
+    consistency_report = save_log_to_md(df)
+    print("✅ Data consistency report generated!")
 
-plot_data(df, "dates", "valid_tickets")
+    # Preprocess data
+    df = prepare_data(df)
+    print("✅ Data preprocessing completed!")
 
-print(df.head())
+    # Plot data visualization
+    plot_data(df, "dates", "valid_tickets")
+    print("✅ Data visualization saved!")
 
-run_model_pipeline(df)
+    # Display first few rows for validation
+    print(df.head())
+
+    # Run model pipeline (training & forecasting)
+    run_model_pipeline(df)
+    print("✅ Model pipeline executed successfully!")
+
+if __name__ == "__main__":
+    main()
